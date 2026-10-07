@@ -1,0 +1,7 @@
+android-app
+venv
+results
+benchmarks
+tests
+.pytest_cache
+*.pdf

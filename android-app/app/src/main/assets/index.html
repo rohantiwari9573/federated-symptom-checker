@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FedHealth — Privacy-Preserving Health AI Symptom Checker</title>
+    <meta name="description" content="Privacy-preserving health AI trained with Federated Learning and Differential Privacy -- raw patient records are never centralized during training.">
+    
+    <!-- Open Graph / Social Link Sharing Metadata -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://federated-symptom-checker.vercel.app/">
+    <meta property="og:title" content="FedHealth — Privacy-Preserving Health AI">
+    <meta property="og:description" content="Privacy-preserving health AI trained with Federated Learning and Differential Privacy -- raw patient records are never centralized during training.">
+    <meta property="og:image" content="https://federated-symptom-checker.vercel.app/favicon.svg">
+
+    <!-- Twitter Card Metadata -->
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:title" content="FedHealth — Privacy-Preserving Health AI">
+    <meta property="twitter:description" content="Privacy-preserving health AI trained with Federated Learning and Differential Privacy -- raw patient records are never centralized during training.">
+
+    <!-- Google Fonts: Space Grotesk & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body class="neo-dark-mode">
+
+    <!-- Top Grid Header / Navigation Bar -->
+    <header class="neo-header border-b">
+        <div class="header-container">
+            <div class="brand-logo">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo-mark">
+                    <path d="M12 2L22 7L12 12L2 7L12 2Z" fill="url(#head_paint0)"/>
+                    <path d="M2 12L12 17L22 12" stroke="url(#head_paint1)" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="miter"/>
+                    <path d="M2 17L12 22L22 17" stroke="url(#head_paint2)" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="miter"/>
+                    <defs>
+                        <linearGradient id="head_paint0" x1="2" y1="7" x2="22" y2="7" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#FF3B30"/>
+                            <stop offset="1" stop-color="#FF6B4A"/>
+                        </linearGradient>
+                        <linearGradient id="head_paint1" x1="2" y1="14.5" x2="22" y2="14.5" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#00D4AA"/>
+                            <stop offset="1" stop-color="#00B4D8"/>
+                        </linearGradient>
+                        <linearGradient id="head_paint2" x1="2" y1="19.5" x2="22" y2="19.5" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#FFFFFF"/>
+                            <stop offset="1" stop-color="#A1A1AA"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span class="logo-text">Fed<span class="text-coral">Health</span></span>
+            </div>
+            
+            <nav class="neo-nav">
+                <a href="#workspace" class="nav-link">MODULES</a>
+                <a href="#privacy" class="nav-link">PRIVACY [ε]</a>
+                <a href="#specs" class="nav-link">FEDERATED FL</a>
+                <a href="#workspace" class="btn-cta-small">CHECKUP NOW ↗</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Grid Workspace Layout -->
+    <div class="hero-grid-container border-b">
+        
+        <!-- Left Hero Content Panel -->
+        <div class="hero-left-panel border-r">
+            
+            <!-- Headline with Angled Crimson Tape Highlight Badge -->
+            <h1 class="hero-display-title">
+                FEDERATED HEALTH AI IN
+                <span class="tape-highlight-container">
+                    <span class="tape-badge">PRIVACY-PRESERVING</span>
+                </span>
+                DIAGNOSTICS
+            </h1>
+
+            <p class="hero-subtext">
+                Trained with Federated Learning and Opacus DP-SGD -- raw patient records are never centralized during training.
+            </p>
+
+            <!-- Primary CTAs -->
+            <div class="hero-actions">
+                <a href="#workspace" class="btn-neo-primary">START DIAGNOSTIC NOW</a>
+                <button class="btn-neo-secondary" id="toggleSimulationBtn">
+                    <span class="play-icon">▶</span> LIVE FL SIMULATION
+                </button>
+            </div>
+
+            <!-- Floating Sticker Badges Cluster -->
+            <div class="sticker-cluster">
+                <span class="sticker tag-1">Differential Privacy</span>
+                <span class="sticker tag-2">Opacus DP-SGD</span>
+                <span class="sticker tag-3">Flower FL</span>
+                <span class="sticker tag-4">PyTorch 2.0</span>
+                <span class="sticker tag-5">Federated Training</span>
+                <span class="sticker tag-6">Privacy-Preserving</span>
+                <span class="sticker tag-7">FastAPI</span>
+                <span class="sticker tag-8">Android Native</span>
+            </div>
+        </div>
+
+        <!-- Right Hero Visual Panel (3D Parametric Wireframe Canvas Tunnel) -->
+        <div class="hero-right-panel">
+            <canvas id="wireframeCanvas"></canvas>
+            <div class="canvas-overlay-label">[ PARAMETRIC FL NETWORK TUNNEL ]</div>
+        </div>
+
+    </div>
+
+    <!-- Compartmentalized Footer Bar (3-Column Grid) -->
+    <div class="footer-grid border-b">
+        <div class="footer-col border-r tech-logos">
+            <span class="partner-label">TECH STACK:</span>
+            <span class="tech-badge">PyTorch</span>
+            <span class="tech-badge">Flower FL</span>
+            <span class="tech-badge">Opacus DP</span>
+            <span class="tech-badge">FastAPI</span>
+        </div>
+        
+        <div class="footer-col border-r stats-social">
+            <div class="avatar-stack">
+                <span class="avatar a1"></span>
+                <span class="avatar a2"></span>
+                <span class="avatar a3"></span>
+                <span class="avatar a4"></span>
+            </div>
+            <div class="stat-meta">
+                <strong class="stat-number">10,000+</strong>
+                <span class="stat-label">Client Models Trained</span>
+            </div>
+        </div>
+        
+        <div class="footer-col trust-badge">
+            <div class="tech-gear-icon">⚙</div>
+            <p class="trust-text">
+                <strong>Federated &amp; Private:</strong> The model is trained via Federated Averaging with Differential Privacy -- raw training data is never centralized.
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Workspace Section -->
+    <main class="main-container" id="workspace">
+        <div class="workspace-card border">
+            
+            <!-- Module Selection Tabs -->
+            <div class="tabs-grid border-b" id="appTabs">
+                <button class="tab-btn active" data-target="symptoms">
+                    <span class="tab-code">[01]</span> 💊 Symptom Checker
+                </button>
+                <button class="tab-btn" data-target="skin">
+                    <span class="tab-code">[02]</span> 🔬 Skin Lesion Analysis
+                </button>
+                <button class="tab-btn" data-target="respiratory">
+                    <span class="tab-code">[03]</span> 🫁 Respiratory Check
+                </button>
+            </div>
+
+            <div class="tab-panes-container">
+                <!-- Tab Pane 1: Symptom Checker -->
+                <div class="tab-pane active" id="symptoms">
+                    <div class="pane-header-bar">
+                        <h2>SYMPTOM DIAGNOSTIC MODULE</h2>
+                        <span class="mono-tag">131 FEATURE VECTORS ACTIVE</span>
+                    </div>
+
+                    <div class="search-container border">
+                        <input type="text" id="symptomSearch" placeholder="SEARCH SYMPTOMS (E.G. HEADACHE, FEVER, COUGH)...">
+                        <span class="search-shortcut">KEYWORD SEARCH</span>
+                    </div>
+
+                    <div class="selected-tags-box" id="selectedSymptoms">
+                        <!-- Selected symptom tags rendered here -->
+                    </div>
+
+                    <div class="symptom-grid-matrix" id="symptomList">
+                        <!-- Checkboxes populated by app.js -->
+                    </div>
+
+                    <div class="actions-bar">
+                        <button class="btn-neo-primary width-full" id="analyzeSymptomsBtn">
+                            <span class="btn-text">RUN SYMPTOM ANALYSIS ⚡</span>
+                            <div class="loader hidden"></div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tab Pane 2: Skin Analysis -->
+                <div class="tab-pane hidden" id="skin">
+                    <div class="pane-header-bar">
+                        <h2>SKIN LESION ANALYSIS MODULE</h2>
+                        <span class="mono-tag">MOBILENETV3 CNN BACKBONE</span>
+                    </div>
+
+                    <div class="upload-zone-neo border" id="skinDropZone">
+                        <input type="file" id="skinFileInput" accept="image/*" class="file-input-hidden">
+                        <div class="upload-content-neo" id="skinUploadContent">
+                            <div class="upload-icon-box">📷</div>
+                            <p class="upload-title">DRAG & DROP IMAGE FILE HERE</p>
+                            <span class="upload-sub">OR CLICK ANYWHERE TO BROWSE LOCAL STORAGE</span>
+                        </div>
+                        <div class="preview-container hidden" id="skinPreviewContainer">
+                            <img id="skinPreview" src="" alt="Preview">
+                            <button class="btn-remove" id="removeSkinFile">×</button>
+                        </div>
+                    </div>
+
+                    <div class="actions-bar">
+                        <button class="btn-neo-primary width-full" id="analyzeSkinBtn" disabled>
+                            <span class="btn-text">ANALYZE IMAGE ⚡</span>
+                            <div class="loader hidden"></div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tab Pane 3: Respiratory Analysis -->
+                <div class="tab-pane hidden" id="respiratory">
+                    <div class="pane-header-bar">
+                        <h2>RESPIRATORY SOUND ANALYSIS MODULE</h2>
+                        <span class="mono-tag">MEL SPECTROGRAM CNN BACKBONE</span>
+                    </div>
+
+                    <div class="audio-workspace-neo">
+                        <div class="recorder-card border">
+                            <button class="btn-record-neo" id="recordBtn">
+                                <span class="record-indicator"></span>
+                            </button>
+                            <div class="timer-neo" id="recordingTimer">00:00</div>
+                            <p class="recording-status-neo" id="recordingStatus">CLICK RECORD TO CAPTURE AUDIO</p>
+                            
+                            <div class="waveform-neo" id="waveform">
+                                <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                                <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                                <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                            </div>
+                        </div>
+
+                        <div class="or-divider"><span>OR UPLOAD FILE</span></div>
+
+                        <div class="upload-zone-neo border" id="audioDropZone">
+                            <input type="file" id="audioFileInput" accept="audio/*" class="file-input-hidden">
+                            <div class="upload-icon-box">🎙️</div>
+                            <p class="upload-title">UPLOAD AUDIO RECORDING</p>
+                            <span class="upload-sub">CLICK TO BROWSE MP3 / WAV / OGG SOUND FILE</span>
+                        </div>
+
+                        <div class="audio-player-container hidden" id="audioPlayerContainer">
+                            <audio id="audioPlayback" controls></audio>
+                            <button class="btn-remove" id="removeAudioFile">×</button>
+                        </div>
+                    </div>
+
+                    <div class="actions-bar">
+                        <button class="btn-neo-primary width-full" id="analyzeAudioBtn" disabled>
+                            <span class="btn-text">ANALYZE RESPIRATORY SOUND ⚡</span>
+                            <div class="loader hidden"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shared Results Panel -->
+        <div class="results-card-neo border hidden" id="resultsPanel">
+            <div class="results-header-bar border-b">
+                <h2>DIAGNOSTIC ANALYSIS RESULTS</h2>
+                <button class="btn-close-neo" id="closeResults">CLOSE [×]</button>
+            </div>
+            
+            <div class="results-body">
+                <div class="primary-result-box border-r">
+                    <span class="result-label">TOP DIAGNOSTIC MATCH:</span>
+                    <div class="diagnosis-name" id="primaryDiagnosis">--</div>
+                    
+                    <div class="confidence-display">
+                        <svg viewBox="0 0 36 36" class="circular-chart-neo">
+                            <path class="circle-bg-neo" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <path class="circle-neo" id="primaryConfidenceArc" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        </svg>
+                        <div class="confidence-number"><span id="primaryConfidence">0</span>%</div>
+                    </div>
+                </div>
+
+                <div class="secondary-results-box">
+                    <span class="result-label">PROBABILITY DISTRIBUTION BREAKDOWN:</span>
+                    <div class="predictions-list-neo" id="predictionsList">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="disclaimer-bar border-t">
+                <span class="disclaimer-icon">⚠️</span>
+                <p><strong>MEDICAL DISCLAIMER:</strong> This AI prediction is generated for decision-support and educational benchmarking. Consult a licensed physician for clinical diagnosis.</p>
+            </div>
+        </div>
+
+        <!-- Privacy & Federated Dashboard (Grid Cards) -->
+        <div class="privacy-grid-neo border" id="privacy">
+            <div class="privacy-header-bar border-b">
+                <h3>FEDERATED PRIVACY DASHBOARD</h3>
+                <span class="live-status-pill">● LIVE TELEMETRY</span>
+            </div>
+
+            <div class="dashboard-columns">
+                <div class="dash-col border-r">
+                    <span class="dash-title">DIFFERENTIAL PRIVACY BUDGET (ε)</span>
+                    <div class="dash-val" id="epsilonValue">ε = 2.00</div>
+                    <div class="dash-progress border"><div class="dash-fill" id="epsilonFill" style="width: 40%"></div></div>
+                    <span class="dash-meta">OPACUS DP-SGD (δ = 1e-5)</span>
+                </div>
+
+                <div class="dash-col border-r">
+                    <span class="dash-title">FEDERATED LEARNING ROUND</span>
+                    <div class="dash-val"><span id="currentRound">20</span> / <span id="totalRounds">20</span></div>
+                    <span class="dash-meta">GLOBAL ACCURACY: <span id="globalAccuracy">88.5</span>%</span>
+                </div>
+
+                <div class="dash-col secure-status-col">
+                    <span class="lock-big">🔒</span>
+                    <strong class="secure-title">FEDERATED &amp; PRIVATE</strong>
+                    <p class="secure-desc">Trained via Federated Averaging with Differential Privacy -- raw training data is never centralized.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="neo-footer border-t">
+        <p>FEDHEALTH FEDERATED LEARNING SYSTEM &copy; 2026. PRIVACY-PRESERVING HEALTH AI BENCHMARK.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="model.js"></script>
+    <script src="api.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Wireframe 3D Parametric Tunnel Canvas Animation
+        // Interactive Live FL Simulation Engine inside 3D Parametric Wireframe Canvas Tunnel
+        (function initTunnelSimulation() {
+            const canvas = document.getElementById('wireframeCanvas');
+            const toggleBtn = document.getElementById('toggleSimulationBtn');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            let width, height;
+
+            function resize() {
+                width = canvas.width = canvas.parentElement.clientWidth || 500;
+                height = canvas.height = canvas.parentElement.clientHeight || 500;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            // Simulation State Engine
+            let isSimulating = false;
+            let simProgress = 0.0; // Lerp weight: 0.0 (ambient tunnel) -> 1.0 (active FL simulation)
+            let time = 0;
+            let currentRound = 1;
+            let roundProgress = 0;
+            let activePhase = "LOCAL DP-SGD TRAINING";
+            let currentLoss = "0.784";
+            let currentAcc = "72.4";
+
+            // 12 Distributed FL Client Nodes
+            const NUM_CLIENTS = 12;
+            const clientNodes = [];
+            for (let i = 0; i < NUM_CLIENTS; i++) {
+                const angle = (i / NUM_CLIENTS) * Math.PI * 2;
+                clientNodes.push({
+                    id: i + 1,
+                    angle: angle,
+                    pulseOffset: Math.random() * Math.PI * 2
+                });
+            }
+
+            // FedAvg Sync Shockwave Ring Objects
+            const shockwaves = [];
+
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', () => {
+                    isSimulating = !isSimulating;
+                    if (isSimulating) {
+                        toggleBtn.classList.add('active');
+                        toggleBtn.style.background = 'rgba(255, 59, 48, 0.15)';
+                        toggleBtn.style.borderColor = '#FF3B30';
+                        toggleBtn.innerHTML = '<span class="play-icon">⏹</span> STOP SIMULATION';
+                    } else {
+                        toggleBtn.classList.remove('active');
+                        toggleBtn.style.background = 'transparent';
+                        toggleBtn.style.borderColor = 'var(--border-bright)';
+                        toggleBtn.innerHTML = '<span class="play-icon">▶</span> LIVE FL SIMULATION';
+                    }
+                });
+            }
+
+            function animate() {
+                time += 0.007;
+
+                // Smooth Linear Interpolation (Lerp) for transition between modes
+                const targetSim = isSimulating ? 1.0 : 0.0;
+                simProgress += (targetSim - simProgress) * 0.05;
+
+                ctx.fillStyle = '#0F0F11';
+                ctx.fillRect(0, 0, width, height);
+
+                const centerX = width / 2;
+                const centerY = height / 2;
+                const numRings = 26;
+                const pointsPerRing = 36;
+                const maxRadius = Math.min(width, height) * 0.75;
+
+                // FL Simulation Logic & Stage Updating
+                if (simProgress > 0.02) {
+                    roundProgress += 0.006 * (0.6 + simProgress * 0.4);
+                    if (roundProgress >= 1.0) {
+                        roundProgress = 0;
+                        currentRound = (currentRound % 50) + 1;
+                        currentLoss = Math.max(0.12, (0.85 * Math.exp(-currentRound * 0.05) + Math.random() * 0.02)).toFixed(3);
+                        currentAcc = Math.min(96.8, (64.2 + (currentRound * 0.65) + Math.random() * 0.4)).toFixed(1);
+                        
+                        // Trigger FedAvg Sync Shockwave ring
+                        shockwaves.push({ radius: 10, alpha: 1.0 });
+                    }
+
+                    if (roundProgress < 0.35) {
+                        activePhase = "LOCAL DP-SGD TRAINING";
+                    } else if (roundProgress < 0.70) {
+                        activePhase = "GRADIENT AGGREGATION";
+                    } else {
+                        activePhase = "GLOBAL MODEL SYNC";
+                    }
+                }
+
+                // 1. Render 3D Parametric Wireframe Tunnel Rings
+                for (let r = 1; r <= numRings; r++) {
+                    const z = (r + (time * 9) % 1);
+                    const radius = Math.pow(z / numRings, 1.9) * maxRadius;
+                    const alpha = Math.min(1, z / 5) * Math.max(0, 1 - z / numRings);
+                    
+                    const warpAmp = 0.04 + (simProgress * 0.02 * Math.sin(time * 3 + r * 0.2));
+                    
+                    ctx.strokeStyle = `rgba(255, 255, 255, ${alpha * (0.35 + simProgress * 0.15)})`;
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    
+                    for (let i = 0; i <= pointsPerRing; i++) {
+                        const angle = (i / pointsPerRing) * Math.PI * 2;
+                        const warp = Math.sin(angle * 4 + time * 3) * (radius * warpAmp);
+                        const currentRadius = radius + warp;
+                        
+                        const x = centerX + Math.cos(angle) * currentRadius;
+                        const y = centerY + Math.sin(angle) * currentRadius;
+                        
+                        if (i === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+
+                // 2. Radial Perspective Grid Spokes
+                ctx.strokeStyle = `rgba(255, 255, 255, ${0.16 + simProgress * 0.08})`;
+                for (let i = 0; i < pointsPerRing; i++) {
+                    const angle = (i / pointsPerRing) * Math.PI * 2;
+                    const xEnd = centerX + Math.cos(angle) * maxRadius;
+                    const yEnd = centerY + Math.sin(angle) * maxRadius;
+
+                    ctx.beginPath();
+                    ctx.moveTo(centerX, centerY);
+                    ctx.lineTo(xEnd, yEnd);
+                    ctx.stroke();
+                }
+
+                // 3. Render FedAvg Global Model Sync Shockwaves (Outward)
+                for (let s = shockwaves.length - 1; s >= 0; s--) {
+                    const sw = shockwaves[s];
+                    sw.radius += 5.0;
+                    sw.alpha -= 0.02;
+
+                    if (sw.alpha <= 0 || sw.radius > maxRadius * 1.1) {
+                        shockwaves.splice(s, 1);
+                        continue;
+                    }
+
+                    ctx.strokeStyle = `rgba(255, 59, 48, ${sw.alpha * simProgress * 0.9})`;
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.arc(centerX, centerY, sw.radius, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+
+                // 4. Render FL Client Nodes & Gradient Packets (Inward / Outward)
+                if (simProgress > 0.005) {
+                    const outerRingRadius = maxRadius * 0.82;
+
+                    clientNodes.forEach((node, idx) => {
+                        const nodeX = centerX + Math.cos(node.angle) * outerRingRadius;
+                        const nodeY = centerY + Math.sin(node.angle) * outerRingRadius;
+
+                        // Smoothly fade in/out node points
+                        ctx.globalAlpha = simProgress;
+                        
+                        const nodePulse = Math.sin(time * 5 + node.pulseOffset) * 2 + 5;
+                        const isPrimary = idx % 3 === 0;
+                        ctx.fillStyle = isPrimary ? '#FF3B30' : '#10B981';
+
+                        ctx.beginPath();
+                        ctx.arc(nodeX, nodeY, nodePulse, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        // Client ID Monospace Tag
+                        ctx.fillStyle = `rgba(255, 255, 255, ${simProgress * 0.9})`;
+                        ctx.font = '10px "JetBrains Mono", monospace';
+                        const labelX = nodeX + (Math.cos(node.angle) * 12);
+                        const labelY = nodeY + (Math.sin(node.angle) * 12);
+                        ctx.fillText(`C#${node.id < 10 ? '0' + node.id : node.id}`, labelX - 12, labelY + 4);
+
+                        // Gradient Transmission Packet Trajectory
+                        if (roundProgress >= 0.25 && roundProgress <= 0.70) {
+                            const pktProgress = (roundProgress - 0.25) / 0.45;
+                            const pktX = nodeX + (centerX - nodeX) * pktProgress;
+                            const pktY = nodeY + (centerY - nodeY) * pktProgress;
+
+                            ctx.fillStyle = '#FF3B30';
+                            ctx.beginPath();
+                            ctx.arc(pktX, pktY, 3, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
+
+                        ctx.globalAlpha = 1.0;
+                    });
+
+                    // 5. Monospace Telemetry HUD Overlay Container Inside Canvas
+                    ctx.save();
+                    ctx.globalAlpha = Math.min(1.0, simProgress * 1.2);
+                    
+                    // Dark HUD box background with sharp 0px corners & crimson border
+                    ctx.fillStyle = 'rgba(15, 15, 17, 0.88)';
+                    ctx.fillRect(16, 16, width - 32, 44);
+                    ctx.strokeStyle = 'rgba(255, 59, 48, 0.7)';
+                    ctx.lineWidth = 1;
+                    ctx.strokeRect(16, 16, width - 32, 44);
+
+                    ctx.font = '700 11px "JetBrains Mono", monospace';
+                    ctx.fillStyle = '#FF3B30';
+                    ctx.fillText('● LIVE FL NETWORK SIMULATOR', 28, 34);
+
+                    ctx.font = '500 10px "JetBrains Mono", monospace';
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.fillText(`ROUND: ${currentRound}/50  |  STAGE: ${activePhase}`, 28, 48);
+
+                    const metricsText = `LOSS: ${currentLoss}  ACC: ${currentAcc}%`;
+                    const textWidth = ctx.measureText(metricsText).width;
+                    ctx.fillStyle = '#A1A1AA';
+                    ctx.fillText(metricsText, width - 28 - textWidth, 42);
+
+                    ctx.restore();
+                }
+
+                // 6. Central Aggregator Core Node
+                const corePulse = Math.sin(time * 5) * 3 + (7 + simProgress * 5);
+                ctx.fillStyle = '#FF3B30';
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, corePulse, 0, Math.PI * 2);
+                ctx.fill();
+
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        })();
+    </script>
+</body>
+</html>

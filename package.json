@@ -1,0 +1,16 @@
+{
+  "name": "federated-symptom-checker",
+  "version": "1.0.0",
+  "description": "Privacy-Preserving Federated Symptom Checker Web Application",
+  "scripts": {
+    "build": "echo 'No build step required for static assets'",
+    "start": "npx serve client-app"
+  },
+  "keywords": [
+    "federated-learning",
+    "symptom-checker",
+    "differential-privacy"
+  ],
+  "author": "saarcasm",
+  "license": "MIT"
+}

@@ -1,0 +1,19 @@
+<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 2L22 7L12 12L2 7L12 2Z" fill="url(#neo_paint0)"/>
+    <path d="M2 12L12 17L22 12" stroke="url(#neo_paint1)" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="miter"/>
+    <path d="M2 17L12 22L22 17" stroke="url(#neo_paint2)" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="miter"/>
+    <defs>
+        <linearGradient id="neo_paint0" x1="2" y1="7" x2="22" y2="7" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#FF3B30"/>
+            <stop offset="1" stop-color="#FF6B4A"/>
+        </linearGradient>
+        <linearGradient id="neo_paint1" x1="2" y1="14.5" x2="22" y2="14.5" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#00D4AA"/>
+            <stop offset="1" stop-color="#00B4D8"/>
+        </linearGradient>
+        <linearGradient id="neo_paint2" x1="2" y1="19.5" x2="22" y2="19.5" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#FFFFFF"/>
+            <stop offset="1" stop-color="#A1A1AA"/>
+        </linearGradient>
+    </defs>
+</svg>

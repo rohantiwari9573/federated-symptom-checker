@@ -1,0 +1,72 @@
+# ==============================================================================
+# Privacy-Preserving Federated Symptom Checker — .gitignore
+# ==============================================================================
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data (large files — download via scripts)
+data/raw/
+data/processed/
+data/downloads/
+*.csv
+*.h5
+*.hdf5
+!data/*.py
+
+# Model checkpoints & exports
+checkpoints/
+saved_models/
+exports/
+*.pt
+*.pth
+*.onnx
+*.tflite
+
+# Benchmarking outputs
+results/
+plots/
+*.png
+*.jpg
+*.jpeg
+!client-app/assets/
+
+# Logs
+logs/
+*.log
+
+# Environment files
+.env
+.env.local
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Node (if any)
+node_modules/
+.vercel
+client-app/server_log.txt
