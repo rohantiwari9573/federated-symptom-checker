@@ -1,136 +1,149 @@
+<div align="center">
+
 # 🛡️ Privacy-Preserving Federated Symptom Checker
 
-> A mobile-first diagnostic assistant that performs **on-device** symptom classification while preserving user privacy through **Federated Learning** and **Differential Privacy**.
+**A diagnostic assistant trained with Federated Learning and Differential Privacy, so raw patient data never leaves the client, and symptom checks run entirely in the browser.**
 
-[![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://python.org)
-[![PyTorch](https://img.shields.io/badge/PyTorch-2.1+-ee4c2c.svg)](https://pytorch.org)
-[![Flower](https://img.shields.io/badge/Flower-1.5+-green.svg)](https://flower.ai)
-[![Opacus](https://img.shields.io/badge/Opacus-1.4+-purple.svg)](https://opacus.ai)
+![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white)
+![PyTorch](https://img.shields.io/badge/PyTorch-2.1+-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)
+![Flower](https://img.shields.io/badge/Flower-federated_learning-1F41BB?style=flat-square)
+![Opacus](https://img.shields.io/badge/Opacus-differential_privacy-4B8BBE?style=flat-square)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
+![Android](https://img.shields.io/badge/Android-client-3DDC84?style=flat-square&logo=android&logoColor=white)
+
+</div>
+
+<br />
+
+<img src="docs/screenshots/client.png" alt="FedHealth web client" width="100%" />
 
 ---
 
-## 🏗️ Architecture
+## Overview
 
-The system consists of **three layers**:
+Medical data is among the most sensitive data there is, which makes it hard to centralize for training. This project trains diagnostic models with **Federated Averaging**: each client trains on its own data and shares only model updates. It adds **Differential Privacy** (per-sample gradient clipping plus calibrated Gaussian noise) to bound what those updates can reveal. The trained symptom model is shipped to the **browser**, so predictions run on-device as well.
 
-```
-┌──────────────────────────────────────────────────────────┐
-│  Layer 1: Client-Side (Local ML)                         │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐              │
-│  │ Symptom  │  │   Skin   │  │ Respira- │  ← On-device │
-│  │   MLP    │  │   CNN    │  │ tory CNN │    models     │
-│  └──────────┘  └──────────┘  └──────────┘              │
-│        ↕              ↕            ↕                     │
-│  ┌────────────────────────────────────────┐              │
-│  │  SQLite Local Storage + JS Client UI  │              │
-│  └────────────────────────────────────────┘              │
-├──────────────────────────────────────────────────────────┤
-│  Layer 2: Federated Coordination                         │
-│  ┌──────────────────┐  ┌─────────────────┐              │
-│  │  Flower Client   │  │  Opacus DP-SGD  │              │
-│  │  (flwr)          │  │  (noise+clip)   │              │
-│  └──────────────────┘  └─────────────────┘              │
-├──────────────────────────────────────────────────────────┤
-│  Layer 3: Central Server (Aggregation)                   │
-│  ┌──────────────────┐  ┌─────────────────┐              │
-│  │  FedAvg Server   │  │  Benchmarking   │              │
-│  │  (Flower)        │  │  Engine         │              │
-│  └──────────────────┘  └─────────────────┘              │
-└──────────────────────────────────────────────────────────┘
-```
+It covers three modalities:
 
-## 📂 Project Structure
+| Modality | Dataset | Model | Input |
+|---|---|---|---|
+| Tabular symptoms | Kaggle Disease–Symptom (4,920 records, 41 diseases, 132 symptoms) | 3-layer MLP | Binary symptom vector |
+| Skin conditions | HAM10000 | MobileNetV3-Small | 224×224 RGB image |
+| Respiratory sounds | ICBHI 2017 | Small CNN | 128×128 Mel spectrogram |
 
-```
-├── data/                    # Dataset download & preprocessing
-├── models/                  # Layer 1 — On-device ML models
-├── federated/               # Layer 2 — Flower + Opacus coordination
-├── server/                  # Layer 3 — FL server, simulation, API
-├── benchmarks/              # Evaluation & privacy-utility analysis
-├── deployment/              # Model export (ExecuTorch / LiteRT)
-├── client-app/              # JavaScript client-facing interface
-└── tests/                   # Test suite
+## Architecture
+
+```mermaid
+flowchart TB
+    subgraph Clients["Clients (local data never leaves)"]
+        C1["Client 1<br/>local training + DP"]
+        C2["Client 2<br/>local training + DP"]
+        Cn["Client N<br/>local training + DP"]
+    end
+    C1 -- "clipped, noised updates" --> S["FedAvg server<br/>(Flower)"]
+    C2 --> S
+    Cn --> S
+    S -- "global model" --> C1
+    S --> C2
+    S --> Cn
+    S --> M["Trained model"] --> B["Browser client<br/>on-device inference (model.js)"]
+    S --> API["FastAPI inference API"] --> A["Android app"]
 ```
 
-## 🚀 Quick Start
+## Results
 
-### 1. Install dependencies
+All numbers below are reproduced from the code in this repository. [`docs/paper_claims_ledger.md`](docs/paper_claims_ledger.md) tracks every claim against its evidence.
+
+**Tabular symptom model** (10 clients, Dirichlet α = 0.5 non-IID split, 10 rounds, δ = 10⁻⁵):
+
+| Setting | Test accuracy |
+|---|--:|
+| Centralized (no privacy) | 100% |
+| FedAvg, no DP | 99.8% at round 2, 100% from round 4 |
+| FedAvg + DP, ε = 5.0 | 38.4% |
+| FedAvg + DP, ε = 2.0 | 23.6% |
+| FedAvg + DP, ε = 1.0 | 3.4% |
+| FedAvg + DP, ε = 0.5 | 4.7% |
+
+Strict privacy budgets cost a lot of accuracy on a 4.9K-record dataset split across 10 clients. Quantifying that privacy–utility tradeoff is the point of the experiment.
+
+**On-device inference:** `client-app/model.js` runs the ε = 5.0 model in pure JavaScript. It matches PyTorch's prediction on all **984/984** test samples, with a maximum logit difference of 1.7×10⁻⁵.
+
+**Skin (HAM10000), centralized:** 86.0% test accuracy, macro-F1 0.80, with a pretrained MobileNetV3-Small. Federated and DP runs for the skin and respiratory branches are still in progress.
+
+## Getting started
+
 ```bash
 pip install -r requirements.txt
-```
 
-### 2. Download & preprocess datasets
-```bash
+# Datasets
 python data/download_datasets.py
-python data/preprocess_tabular.py
-python data/preprocess_skin.py
-python data/preprocess_respiratory.py
-```
+python data/preprocess_tabular.py      # also: preprocess_skin.py, preprocess_respiratory.py
 
-### 3. Run federated simulation
-```bash
-# Tabular symptom model (MVP)
+# Reproduce the tabular results table (centralized vs. FedAvg vs. FedAvg + DP)
+python benchmarks/real_comparison_experiment.py
+
+# Flower-based federated simulation
 python server/run_simulation.py --model symptom_mlp --num_clients 10 --rounds 20 --epsilon 2.0
 
-# Skin lesion model
-python server/run_simulation.py --model skin_cnn --num_clients 5 --rounds 30 --epsilon 5.0
-
-# Respiratory model
-python server/run_simulation.py --model respiratory_cnn --num_clients 5 --rounds 30 --epsilon 5.0
-```
-
-### 4. Run baselines for comparison
-```bash
+# Baselines and privacy–utility sweep
 python server/centralized_baseline.py --model symptom_mlp
 python server/fl_no_dp_baseline.py --model symptom_mlp --num_clients 10 --rounds 20
-```
-
-### 5. Run benchmarks
-```bash
 python benchmarks/privacy_utility_sweep.py --model symptom_mlp
 python benchmarks/plot_results.py
 ```
 
-### 6. Launch the client app
-```bash
-# Start the API server
-python server/api_server.py
+**Web client:** run `npx serve client-app` and open the printed URL. The symptom checker works fully offline. The skin and respiratory modules need the inference API, which you start with `python server/api_server.py`.
 
-# Open client-app/index.html in your browser
+**Android client:** open `android-app/` in Android Studio.
+
+## Testing
+
+```bash
+pytest tests/                          # model + preprocessing tests
+node tests/js/model_parity.test.js     # browser model vs. PyTorch parity
 ```
 
-## 📊 Symptom Modalities
+## Project structure
 
-| Modality | Dataset | Model | Input |
-|---|---|---|---|
-| Tabular Symptoms | Kaggle Disease-Symptom [8] | MLP (3-layer) | Binary symptom vector |
-| Skin Conditions | HAM10000 [6] | MobileNetV3-Small | 224×224 RGB image |
-| Respiratory Sounds | ICBHI 2017 [7] | Small CNN | 128×128 Mel spectrogram |
+```text
+data/         dataset download, preprocessing, non-IID partitioning
+models/       symptom MLP, skin CNN, respiratory CNN
+federated/    Flower client/server, FedAvg strategy, DP configuration
+server/       simulation runner, baselines, FastAPI inference server
+benchmarks/   experiments, privacy–utility sweep, plots
+deployment/   model export + inference benchmarks
+client-app/   web client with in-browser inference
+android-app/  native Android client
+tests/        Python and JS tests
+docs/         paper claims ledger
+```
 
-## 🔒 Privacy Guarantees
-
-- **Federated Learning**: Raw medical data **never leaves** the user's device
-- **Differential Privacy**: Calibrated Gaussian noise via Opacus bounds information leakage
-- **Privacy Budget (ε)**: Tunable and tracked across federated rounds
-- **Gradient Clipping**: Per-sample gradient clipping prevents outlier exposure
-
-## 👥 Team
+## Team
 
 | Member | Responsibility |
 |---|---|
-| Rohan Tiwari | Federated coordination & server aggregation (Flower / FedAvg) |
-| Saar Ravindra Singh | Client-side model development & on-device deployment |
-| Saksham Garg | Differential Privacy integration (Opacus) & benchmarking |
+| **Rohan Tiwari** | Federated coordination and server aggregation (Flower / FedAvg) |
+| Saar Ravindra Singh | Client-side model development and on-device deployment |
+| Saksham Garg | Differential Privacy integration (Opacus) and benchmarking |
 
-**Mentor**: Dr. Jaishree Jain, Department of CSE, AKGEC Ghaziabad
+**Mentor:** Dr. Jaishree Jain, Department of CSE, AKGEC Ghaziabad
 
-## 📚 References
+This repository is Rohan's working copy of the team project ([original repository](https://github.com/saarcasm/Federated-Symptom-Checker)). It extends the project with:
 
-1. McMahan et al., "Communication-Efficient Learning of Deep Networks from Decentralized Data," AISTATS 2017
-2. Rieke et al., "The Future of Digital Health with Federated Learning," NPJ Digital Medicine 2020
-3. Yousefpour et al., "Opacus: User-Friendly Differential Privacy Library in PyTorch," 2021
-4. Dwork, "Differential Privacy," 2006
-5. Beutel et al., "Flower: A Friendly Federated Learning Framework," 2020
-6. Tschandl et al., "The HAM10000 Dataset," Scientific Data 2018
-7. Rocha et al., "ICBHI 2017 Challenge Respiratory Sound Database," 2017
-8. Kaggle Disease Symptom Prediction Dataset
+- an exact reproduction of the paper's tabular results;
+- in-browser inference with a PyTorch parity test;
+- removal of mock prediction fallbacks from the web and Android clients;
+- skin and respiratory experiments;
+- a claim-by-claim verification ledger.
+
+## References
+
+1. McMahan et al., *Communication-Efficient Learning of Deep Networks from Decentralized Data*, AISTATS 2017
+2. Rieke et al., *The Future of Digital Health with Federated Learning*, npj Digital Medicine 2020
+3. Yousefpour et al., *Opacus: User-Friendly Differential Privacy Library in PyTorch*, 2021
+4. Dwork, *Differential Privacy*, ICALP 2006
+5. Beutel et al., *Flower: A Friendly Federated Learning Framework*, 2020
+6. Tschandl et al., *The HAM10000 Dataset*, Scientific Data 2018
+7. Rocha et al., *ICBHI 2017 Challenge Respiratory Sound Database*, 2017
+8. Kaggle, *Disease Symptom Prediction* dataset
